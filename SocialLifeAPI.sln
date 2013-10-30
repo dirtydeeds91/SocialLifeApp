@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLife.Models", "SocialLife.Models\SocialLife.Models.csproj", "{312B27C7-5DC4-4923-A7B5-45D69B05AF20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLife.Data", "SocialLife.Data\SocialLife.Data.csproj", "{A83C6CA0-2F5B-4705-923E-494ED1636ABE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLifeTest.Client", "SocialLifeTest.Client\SocialLifeTest.Client.csproj", "{655CB7D6-59C1-421D-9F58-0BCED3C40399}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{312B27C7-5DC4-4923-A7B5-45D69B05AF20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{312B27C7-5DC4-4923-A7B5-45D69B05AF20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{312B27C7-5DC4-4923-A7B5-45D69B05AF20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{312B27C7-5DC4-4923-A7B5-45D69B05AF20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A83C6CA0-2F5B-4705-923E-494ED1636ABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A83C6CA0-2F5B-4705-923E-494ED1636ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A83C6CA0-2F5B-4705-923E-494ED1636ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A83C6CA0-2F5B-4705-923E-494ED1636ABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{655CB7D6-59C1-421D-9F58-0BCED3C40399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{655CB7D6-59C1-421D-9F58-0BCED3C40399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{655CB7D6-59C1-421D-9F58-0BCED3C40399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{655CB7D6-59C1-421D-9F58-0BCED3C40399}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
