@@ -20,20 +20,22 @@ namespace SocialLife.Models
         public System.DateTime MessageDate { get; set; }
 
         //Database relationships
-        
-        public int SenderId { get; set; }
 
-        [InverseProperty("SenderId")]
+        public int? SenderId { get; set; }
+
+        public int? ReceiverId { get; set; }
+
+        //[InverseProperty("MessageSender")]
+        [ForeignKey("SenderId")]
         public virtual User Sender { get; set; }
 
-        public int ReceiverId { get; set; }
-
-        [InverseProperty("ReceiverId")]
+        //[InverseProperty("MessageReceiver")]
+        [ForeignKey("ReceiverId")]
         public virtual User Receiver { get; set; }
-
 
         [ForeignKey("Status")]
         public int StatusId { get; set; }
+
         public virtual Status Status { get; set; }
     }
 }

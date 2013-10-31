@@ -15,10 +15,10 @@ namespace SocialLifeTest.Client
         {
             var db = new SocialLifeContext();
 
-            var user = new User();
-            user.Username = "Pesho";
-            user.Password = "1234567890123456789012345678901234567890";
-            db.Users.Add(user);
+            var status = new Status();
+            status.StatusName = "Online";
+            status.StatusId = 1;
+            db.Statuses.Add(status);
             db.SaveChanges();
         }
     }
