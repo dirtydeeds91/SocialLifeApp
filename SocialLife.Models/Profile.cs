@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SocialLife.Models
 {
+    [Table("Profiles")]
     public partial class Profile
     {
         //Database fields

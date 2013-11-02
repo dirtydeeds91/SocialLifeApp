@@ -7,6 +7,7 @@ using System.Text;
 
 namespace SocialLife.Models
 {
+    [Table("Messages")]
     public partial class Message
     {
         //Database fields

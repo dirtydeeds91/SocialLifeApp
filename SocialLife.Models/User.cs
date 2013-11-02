@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SocialLife.Models
 {
+    [Table("Users")]
     public class User
     {
         //Constructor

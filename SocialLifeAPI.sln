@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLife.Data", "SocialLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLifeTest.Client", "SocialLifeTest.Client\SocialLifeTest.Client.csproj", "{655CB7D6-59C1-421D-9F58-0BCED3C40399}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLife.Services", "SocialLife.Services\SocialLife.Services.csproj", "{B0266520-F812-4D95-9EA1-B90B6131CA67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{655CB7D6-59C1-421D-9F58-0BCED3C40399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{655CB7D6-59C1-421D-9F58-0BCED3C40399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{655CB7D6-59C1-421D-9F58-0BCED3C40399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0266520-F812-4D95-9EA1-B90B6131CA67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0266520-F812-4D95-9EA1-B90B6131CA67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0266520-F812-4D95-9EA1-B90B6131CA67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0266520-F812-4D95-9EA1-B90B6131CA67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

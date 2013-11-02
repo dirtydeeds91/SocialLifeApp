@@ -7,6 +7,7 @@ using System.Text;
 
 namespace SocialLife.Models
 {
+    [Table("Locations")]
     public partial class Location
     {
         [Key]
