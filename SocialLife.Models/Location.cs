@@ -22,9 +22,10 @@ namespace SocialLife.Models
         [Required]
         public System.DateTime Date { get; set; }
 
-        [ForeignKey("User")]
-        public int UserId { get; set; }
+        //[ForeignKey("User")]
+        public int? UserId { get; set; }
 
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
     }
 }

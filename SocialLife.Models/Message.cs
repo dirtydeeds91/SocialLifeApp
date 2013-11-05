@@ -26,6 +26,8 @@ namespace SocialLife.Models
 
         public int? ReceiverId { get; set; }
 
+        public int? EventId { get; set; }
+
         //[InverseProperty("MessageSender")]
         [ForeignKey("SenderId")]
         public virtual User Sender { get; set; }
@@ -33,6 +35,9 @@ namespace SocialLife.Models
         //[InverseProperty("MessageReceiver")]
         [ForeignKey("ReceiverId")]
         public virtual User Receiver { get; set; }
+
+        [ForeignKey("EventId")]
+        public virtual Event EventMessages { get; set; }
 
         [ForeignKey("Status")]
         public int StatusId { get; set; }

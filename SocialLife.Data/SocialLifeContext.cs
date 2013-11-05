@@ -19,6 +19,7 @@ namespace SocialLife.Data
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Event> Events { get; set; }
         public DbSet<Message> Messages { get; set; }
     }
 }

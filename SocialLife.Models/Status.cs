@@ -14,6 +14,7 @@ namespace SocialLife.Models
         public Status()
         {
             this.Profiles = new HashSet<Profile>();
+            this.Events = new HashSet<Event>();
         }
 
         //Database fields
@@ -24,7 +25,8 @@ namespace SocialLife.Models
         public string StatusName { get; set; }
 
         //Database relationships
-        [Required]
         public virtual ICollection<Profile> Profiles { get; set; }
+
+        public virtual ICollection<Event> Events { get; set; }
     }
 }

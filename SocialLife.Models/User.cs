@@ -17,8 +17,7 @@ namespace SocialLife.Models
             this.Locations = new HashSet<Location>();
             this.MessageSender = new HashSet<Message>();
             this.MessageReceiver = new HashSet<Message>();
-            //this.SentMessages = new HashSet<Message>();
-            //this.ReceivedMessages = new HashSet<Message>();
+            this.Events = new HashSet<Event>();
         }
 
         //Database fields
@@ -32,11 +31,14 @@ namespace SocialLife.Models
         public string DisplayName { get; set; }
 
         [Required, MinLength(40), MaxLength(40), StringLength(40, MinimumLength=40)]
-        public string Password { get; set; }
+        public string AuthCode { get; set; }
+
+        public string SessionKey { get; set; }
 
         //Database relationships
         public virtual Profile Profile { get; set; }
 
+        [InverseProperty("User")]
         public virtual ICollection<Location> Locations { get; set; }
 
         [InverseProperty("Sender")]
@@ -44,5 +46,7 @@ namespace SocialLife.Models
 
         [InverseProperty("Receiver")]
         public virtual ICollection<Message> MessageReceiver { get; set; }
+
+        public virtual ICollection<Event> Events { get; set; }
     }
 }
