@@ -15,13 +15,10 @@ namespace SocialLife.Models
         [Key]
         public int UserId { get; set; }
 
-        [Required]
         public int StatusId { get; set; }
 
-        [Required]
         public string Avatar { get; set; }
 
-        [Required]
         public string FriendsList { get; set; }
 
         public Nullable<bool> Gender { get; set; }
@@ -40,7 +37,6 @@ namespace SocialLife.Models
         public DateTime? BirthDate { get; set; }
 
         //Database relationships
-        [Required]
         public virtual Status Status { get; set; }
 
         [Required]

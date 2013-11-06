@@ -56,10 +56,21 @@ namespace SocialLife.Services.Controllers
                     {
                         Username = user.Username,
                         DisplayName = user.DisplayName,
-                        AuthCode = user.AuthCode,
+                        AuthCode = user.AuthCode
                     };
 
                     context.Users.Add(userToAdd);
+                    context.SaveChanges();
+
+                    var userProfile = new Profile()
+                    {
+                        User = userToAdd,
+                        UserId = userToAdd.UserId,
+                    };
+
+                    userProfile.Status = context.Statuses.Where(st => st.StatusId == 1).FirstOrDefault();
+
+                    context.Profiles.Add(userProfile);
                     context.SaveChanges();
 
                     string sessionKey = userToAdd.SessionKey;
@@ -75,7 +86,8 @@ namespace SocialLife.Services.Controllers
                     {
                         Username = user.Username,
                         DisplayName = user.DisplayName,
-                        SessionKey = sessionKey
+                        SessionKey = sessionKey,
+                        Id = userToAdd.UserId
                     };
 
                     var response = Request.CreateResponse<UserModel>(HttpStatusCode.OK, registeredUser); //FIX THIS
