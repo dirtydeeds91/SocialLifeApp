@@ -16,6 +16,16 @@ namespace SocialLife.Services.Controllers
     {
         private IDbContextFactory<DbContext> contextFactory;
 
+        public ProfilesController()
+        {
+            this.contextFactory = new SocialLifeDbContextFactory();
+        }
+
+        public ProfilesController(IDbContextFactory<DbContext> contextFactory)
+        {
+            this.contextFactory = contextFactory;
+        }
+
         [HttpPut]
         [ActionName("update")]
         public HttpResponseMessage PutUpdateProfile([FromBody]ProfileModel updatedProfile, [FromUri]string sessionKey)
@@ -43,6 +53,115 @@ namespace SocialLife.Services.Controllers
                 context.SaveChanges();
 
                 var response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
+            }
+        }
+
+        [HttpPut]
+        [ActionName("add")]
+        public HttpResponseMessage PutAddFriend(int id, [FromUri]string sessionKey)
+        {
+            var context = new SocialLifeContext();
+            using (context)
+            {
+                User userEntity = context.Users.Where(us => us.SessionKey == sessionKey).FirstOrDefault();
+                if (userEntity == null)
+                {
+                    throw new ArgumentException("No such logged user.");
+                }
+
+                var friends = userEntity.Profile.FriendsList;
+
+                var friendsList = friends.Split(' ', ',');
+
+                foreach (var friend in friendsList)
+                {
+                    if (id == int.Parse(friend))
+                    {
+                        throw new ArgumentException("Already in friends list.");
+                    }
+                }
+
+                friends = friends + "," + id.ToString();
+
+                userEntity.Profile.FriendsList = friends;
+
+                context.SaveChanges();
+
+                //SEND NOTIFICATION TO OTHER USER!
+
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+
+                return response;
+            }
+        }
+
+        [HttpPut]
+        [ActionName("remove")]
+        public HttpResponseMessage PutRemoveFriend(int id, [FromUri]string sessionKey)
+        {
+            var context = new SocialLifeContext();
+            using (context)
+            {
+                User userEntity = context.Users.Where(us => us.SessionKey == sessionKey).FirstOrDefault();
+
+                User removedUser = context.Users.Where(us => us.UserId == id).FirstOrDefault();
+
+                if (userEntity == null || removedUser == null)
+                {
+                    throw new ArgumentException("No such user.");
+                }
+
+                var friends = userEntity.Profile.FriendsList;
+
+                var friendsList = friends.Split(' ', ',');
+
+                string newList = "";
+
+                foreach (var friend in friendsList)
+                {
+                    if (id != int.Parse(friend))
+                    {
+                        if (newList == "")
+                        {
+                            newList = newList + friend;
+                        }
+                        else
+                        {
+                            newList = newList + "," + friend;
+                        }
+                    }
+                }
+
+                userEntity.Profile.FriendsList = newList;
+
+                var removedUserFriends = removedUser.Profile.FriendsList;
+
+                var removedFriendsList = removedUserFriends.Split(' ', ',');
+
+                string otherNewList = "";
+
+                foreach (var friend in removedFriendsList)
+                {
+                    if (id != int.Parse(friend))
+                    {
+                        if (otherNewList == "")
+                        {
+                            otherNewList = otherNewList + friend;
+                        }
+                        else
+                        {
+                            otherNewList = otherNewList + "," + friend;
+                        }
+                    }
+                }
+
+                removedUser.Profile.FriendsList = otherNewList;
+
+                context.SaveChanges();
+
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+
                 return response;
             }
         }

@@ -17,7 +17,11 @@ namespace SocialLife.Services.Models
 
         public string Receiver { get; set; }
 
+        public int ReceiverId { get; set; }
+
         public string Event { get; set; }
+
+        public int EventId { get; set; }
 
         public string Status { get; set; }
     }

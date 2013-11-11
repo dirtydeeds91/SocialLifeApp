@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SocialLife.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,6 +22,8 @@ namespace SocialLife.Services.Models
 
         public string Latitude { get; set; }
 
-        public ICollection<string> UsersList { get; set; }
+        public List<User> UsersList { get; set; }
+
+        public string Status { get; set; }
     }
 }

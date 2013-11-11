@@ -16,6 +16,24 @@ namespace SocialLife.Services
             );
 
             config.Routes.MapHttpRoute(
+                name: "ProfilesApi",
+                routeTemplate: "api/profiles/{action}/{id}",
+                defaults: new { controller = "profiles", id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "MessagesApi",
+                routeTemplate: "api/messages/{action}/{id}",
+                defaults: new { controller = "messages", id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "EventsApi",
+                routeTemplate: "api/events/{action}/{id}",
+                defaults: new { controller = "events", id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
