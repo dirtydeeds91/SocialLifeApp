@@ -196,7 +196,10 @@ namespace SocialLife.Services.Controllers
                         DisplayName = foundUser.DisplayName,
                         Mood = foundUser.Profile.Mood,
                         Status = foundUser.Profile.Status.StatusName,
-                        PhoneNumber = foundUser.Profile.PhoneNumber
+                        PhoneNumber = foundUser.Profile.PhoneNumber,
+                        LastLatitude = foundUser.Locations.Last().Latitude,
+                        LastLongitute = foundUser.Locations.Last().Longitude,
+                        LastLocationDate = foundUser.Locations.Last().Date
                     };
 
                     var response = Request.CreateResponse<ProfileModel>(HttpStatusCode.OK, userProfile);
@@ -206,6 +209,78 @@ namespace SocialLife.Services.Controllers
                 {
                     throw new ArgumentOutOfRangeException("No such user found.");
                 }
+            }
+        }
+
+        [HttpGet]
+        [ActionName("search")]
+        public HttpResponseMessage GetSearchUsers([FromUri]string username, [FromUri]string sessionKey)
+        {
+            var context = new SocialLifeContext();
+            using (context)
+            {
+                User userEntity = context.Users.Where(us => us.SessionKey == sessionKey).FirstOrDefault();
+                if (userEntity == null)
+                {
+                    throw new ArgumentException("No such logged user.");
+                }
+
+                ICollection<User> foundUsers = context.Users.Where(us => us.Username.ToLower().Contains(username.ToLower())
+                                                                   || us.DisplayName.ToLower().Contains(username.ToLower()))
+                                                                   .ToList();
+
+                if (foundUsers != null)
+                {
+                    ICollection<UserModel> usersList = new List<UserModel>();
+
+                    foreach (var foundUser in foundUsers)
+                    {
+                        UserModel userProfile = new UserModel()
+                        {
+                            Username = foundUser.Username,
+                            Id = foundUser.UserId,
+                            DisplayName = foundUser.DisplayName
+                        };
+
+                        usersList.Add(userProfile);
+                    }
+
+                    var response = Request.CreateResponse<ICollection<UserModel>>(HttpStatusCode.OK, usersList);
+                    return response;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("No such user found.");
+                }
+            }
+        }
+
+        [HttpPost]
+        [ActionName("location")]
+        public HttpResponseMessage PostCurrentLocation([FromUri]string longitude, [FromUri]string latitude, [FromUri]string sessionKey)
+        {
+            var context = new SocialLifeContext();
+            using (context)
+            {
+                User userEntity = context.Users.Where(us => us.SessionKey == sessionKey).FirstOrDefault();
+                if (userEntity == null)
+                {
+                    throw new ArgumentException("No such logged user.");
+                }
+
+                Location userLocation = new Location()
+                {
+                    UserId = userEntity.UserId,
+                    Latitude = latitude,
+                    Longitude = longitude,
+                    Date = DateTime.Now,
+                };
+
+                context.Locations.Add(userLocation);
+                context.SaveChanges();
+
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
             }
         }
     }

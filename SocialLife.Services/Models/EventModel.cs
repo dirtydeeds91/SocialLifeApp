@@ -22,7 +22,7 @@ namespace SocialLife.Services.Models
 
         public string Latitude { get; set; }
 
-        public List<User> UsersList { get; set; }
+        public List<UserModel> UsersList { get; set; }
 
         public string Status { get; set; }
     }

@@ -55,8 +55,22 @@ namespace SocialLife.Services.Controllers
                         Longitude = chosenEvent.EventLocation.Longitude,
                         Latitude = chosenEvent.EventLocation.Latitude,
                         Status = chosenEvent.EventStatus.StatusName,
-                        //UsersList = usersList
+                        UsersList = new List<UserModel>()
                     };
+
+                    if (usersList != null)
+                    {
+                        foreach (var user in usersList)
+                        {
+                            var newUser = new UserModel()
+                            {
+                                Username = user.Username,
+                                DisplayName = user.DisplayName,
+                                Id = user.UserId
+                            };
+                            eventInfo.UsersList.Add(newUser);
+                        }
+                    }
 
                     HttpResponseMessage successfulResponse = Request.CreateResponse<EventModel>(HttpStatusCode.OK, eventInfo);
 
@@ -271,6 +285,91 @@ namespace SocialLife.Services.Controllers
                     context.SaveChanges();
 
                     HttpResponseMessage successfulResponse = Request.CreateResponse(HttpStatusCode.OK);
+
+                    return successfulResponse;
+                }
+
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+            }
+        }
+
+        [HttpGet]
+        [ActionName("search")]
+        public HttpResponseMessage GetSearchEvents([FromUri]string name, [FromUri]string sessionKey)
+        {
+            var context = new SocialLifeContext();
+            using (context)
+            {
+                if (ModelState.IsValid)
+                {
+                    User sender = context.Users.Where(us => us.SessionKey == sessionKey).FirstOrDefault();
+
+                    ICollection<Event> foundEvents = context.Events.Where(ev => ev.EventName.ToLower().Contains(name.ToLower()) 
+                                                                          && ev.EventStatus.StatusName == "Public")
+                                                                          .ToList();
+
+                    if (sender == null || foundEvents.Count == 0)
+                    {
+                        throw new ArgumentOutOfRangeException("No such user, no found events or invalid key.");
+                    }
+
+                    ICollection<EventModel> results = new List<EventModel>();
+
+                    foreach (var chosenEvent in foundEvents)
+                    {
+                        EventModel eventInfo = new EventModel()
+                        {
+                            EventId = chosenEvent.EventId,
+                            Name = chosenEvent.EventName,
+                            CreatorName = chosenEvent.Users.First().DisplayName,
+                            Date = chosenEvent.EventDate
+                        };
+
+                        results.Add(eventInfo);
+                    }
+                    
+                    HttpResponseMessage successfulResponse = Request.CreateResponse<ICollection<EventModel>>(HttpStatusCode.OK, results);
+
+                    return successfulResponse;
+                }
+
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+            }
+        }
+
+        [HttpGet]
+        [ActionName("user")]
+        public HttpResponseMessage GetSearchEvents(int id, [FromUri]string sessionKey)
+        {
+            var context = new SocialLifeContext();
+            using (context)
+            {
+                if (ModelState.IsValid)
+                {
+                    User sender = context.Users.Where(us => us.SessionKey == sessionKey).FirstOrDefault();
+
+                    ICollection<Event> foundEvents = context.Events.Where(ev => ev.Users.FirstOrDefault().UserId == id).ToList();
+
+                    if (sender == null || foundEvents.Count == 0)
+                    {
+                        throw new ArgumentOutOfRangeException("No such user, no found events or invalid key.");
+                    }
+
+                    ICollection<EventModel> results = new List<EventModel>();
+
+                    foreach (var chosenEvent in foundEvents)
+                    {
+                        EventModel eventInfo = new EventModel()
+                        {
+                            EventId = chosenEvent.EventId,
+                            Name = chosenEvent.EventName,
+                            Date = chosenEvent.EventDate
+                        };
+
+                        results.Add(eventInfo);
+                    }
+
+                    HttpResponseMessage successfulResponse = Request.CreateResponse<ICollection<EventModel>>(HttpStatusCode.OK, results);
 
                     return successfulResponse;
                 }

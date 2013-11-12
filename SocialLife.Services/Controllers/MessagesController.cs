@@ -67,9 +67,11 @@ namespace SocialLife.Services.Controllers
                 {
                     //if the receiver gets a message, it changes the status to "read"
                     //TODO: FIX THE STATUS ID!!!!
-                    if (singleMessage.StatusId != 3 && singleMessage.SenderId == id)
+                    var readMessageStatus = context.Statuses.Where(st => st.StatusName == "Read").First().StatusId;
+
+                    if (singleMessage.StatusId != readMessageStatus && singleMessage.SenderId == id)
                     {
-                        singleMessage.StatusId = 3;
+                        singleMessage.StatusId = readMessageStatus;
                         context.SaveChanges();
                     }
 
@@ -105,6 +107,12 @@ namespace SocialLife.Services.Controllers
                     if (sender == null || receiver == null)
                     {
                         throw new ArgumentOutOfRangeException("No such user, event or invalid key.");
+                    }
+
+                    //CHECK IF RECEIVER IS FRIEND
+                    if (!sender.Profile.FriendsList.Contains(receiver.UserId.ToString()))
+                    {
+                        throw new ArgumentOutOfRangeException("This user is not in your friends list.");
                     }
 
                     Message messageToPush = new Message()
@@ -165,10 +173,11 @@ namespace SocialLife.Services.Controllers
                 foreach (var singleMessage in orderedMessages)
                 {
                     //if the receiver gets a message, it changes the status to "read"
-                    //TODO: FIX THE STATUS ID!!!!
-                    if (singleMessage.StatusId != 3 && singleMessage.SenderId == id)
+                    var readMessageStatus = context.Statuses.Where(st => st.StatusName == "Read").First().StatusId;
+
+                    if (singleMessage.StatusId != readMessageStatus && singleMessage.SenderId == id)
                     {
-                        singleMessage.StatusId = 3;
+                        singleMessage.StatusId = readMessageStatus;
                         context.SaveChanges();
                     }
 

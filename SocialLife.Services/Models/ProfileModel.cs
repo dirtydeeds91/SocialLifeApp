@@ -8,7 +8,7 @@ namespace SocialLife.Services.Models
     public class ProfileModel
     {
         public int UserId { get; set; }
-
+        
         public string DisplayName { get; set; }
 
         //profile details
@@ -31,5 +31,11 @@ namespace SocialLife.Services.Models
         public DateTime? BirthDate { get; set; }
 
         public string FriendsList { get; set; }
+
+        public string LastLongitute { get; set; }
+
+        public string LastLatitude { get; set; }
+
+        public DateTime LastLocationDate { get; set; }
     }
 }
