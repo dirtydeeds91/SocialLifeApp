@@ -68,7 +68,7 @@ namespace SocialLife.Services.Controllers
                         UserId = userToAdd.UserId,
                     };
 
-                    userProfile.Status = context.Statuses.Where(st => st.StatusId == 1).FirstOrDefault();
+                    userProfile.Status = context.Statuses.Where(st => st.StatusName == "Unknown").FirstOrDefault();
 
                     context.Profiles.Add(userProfile);
                     context.SaveChanges();

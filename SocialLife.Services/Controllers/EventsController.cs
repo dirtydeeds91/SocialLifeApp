@@ -45,7 +45,7 @@ namespace SocialLife.Services.Controllers
                     }
 
                     var usersList = chosenEvent.Users.ToList();
-                    //TODO - Serialization of users!
+
                     EventModel eventInfo = new EventModel()
                     {
                         Name = chosenEvent.EventName,
@@ -105,7 +105,7 @@ namespace SocialLife.Services.Controllers
                         Messages = new List<Message>(),
                         Users = new List<User>(),
                         //WAIT WUUUUUUT?
-                        EventStatus = context.Statuses.First(),
+                        EventStatus = context.Statuses.Where(st => st.StatusName == newEvent.Status).First(),
                         EventLocation = new Location()
                         {
                             Latitude = newEvent.Latitude,
@@ -206,6 +206,7 @@ namespace SocialLife.Services.Controllers
                     if (chosenEvent.Users.First() == sender ^ sender == userToRemove)
                     {
                         chosenEvent.Users.Remove(userToRemove);
+                        context.SaveChanges();
                     }
 
                     HttpResponseMessage successfulResponse = Request.CreateResponse(HttpStatusCode.OK);
@@ -241,7 +242,8 @@ namespace SocialLife.Services.Controllers
                     chosenEvent.EventContent = updatedEvent.Content;
                     chosenEvent.EventDate = updatedEvent.Date;
                     chosenEvent.EventName = updatedEvent.Name;
-                    chosenEvent.StatusId = int.Parse(updatedEvent.Status);
+                    var newStatus = updatedEvent.Status;
+                    chosenEvent.StatusId = context.Statuses.Where(st => st.StatusName == newStatus).First().StatusId;
                     if (updatedEvent.Latitude != null && updatedEvent.Longitude != null)
                     {
                         chosenEvent.EventLocation = new Location()

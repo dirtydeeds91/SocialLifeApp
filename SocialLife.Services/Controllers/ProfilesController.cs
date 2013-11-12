@@ -47,7 +47,9 @@ namespace SocialLife.Services.Controllers
                 userEntity.Profile.Gender = updatedProfile.Gender;
                 userEntity.Profile.Mood = updatedProfile.Mood;
                 userEntity.Profile.PhoneNumber = updatedProfile.PhoneNumber;
-                userEntity.Profile.Status.StatusName = updatedProfile.Status;
+                //CHECK THIS!!!!!
+                var statusId = context.Statuses.Where(st => st.StatusName == updatedProfile.Status).First();
+                userEntity.Profile.StatusId = context.Statuses.Where(st => st.StatusName == updatedProfile.Status).First().StatusId;
                 userEntity.DisplayName = updatedProfile.DisplayName;
 
                 context.SaveChanges();
@@ -72,7 +74,12 @@ namespace SocialLife.Services.Controllers
 
                 var friends = userEntity.Profile.FriendsList;
 
-                var friendsList = friends.Split(' ', ',');
+                string[] friendsList = {};
+
+                if (!String.IsNullOrEmpty(friends))
+                {
+                    friendsList = friends.Split(' ', ',');
+                }
 
                 foreach (var friend in friendsList)
                 {
@@ -82,9 +89,27 @@ namespace SocialLife.Services.Controllers
                     }
                 }
 
-                friends = friends + "," + id.ToString();
+                if (String.IsNullOrEmpty(friends))
+                {
+                    friends = id.ToString();
+                }
+                else
+                {
+                    friends = friends + "," + id.ToString();
+                }
 
                 userEntity.Profile.FriendsList = friends;
+
+                Message addedFriendMessage = new Message()
+                {
+                    SenderId = userEntity.UserId,
+                    MessageDate = DateTime.Now,
+                    StatusId = context.Statuses.Where(st => st.StatusName == "Delivered").First().StatusId,
+                    ReceiverId = id,
+                    MessageContent = "Hi! I am now following you!"
+                };
+
+                context.Messages.Add(addedFriendMessage);
 
                 context.SaveChanges();
 
@@ -137,7 +162,12 @@ namespace SocialLife.Services.Controllers
 
                 var removedUserFriends = removedUser.Profile.FriendsList;
 
-                var removedFriendsList = removedUserFriends.Split(' ', ',');
+                string[] removedFriendsList = { };
+
+                if (!String.IsNullOrEmpty(removedUserFriends))
+                {
+                    removedFriendsList = removedUserFriends.Split(' ', ',');
+                }
 
                 string otherNewList = "";
 
@@ -168,7 +198,7 @@ namespace SocialLife.Services.Controllers
 
         [HttpGet]
         [ActionName("user")]
-        public HttpResponseMessage GetUserProfile([FromUri]int id, [FromUri]string sessionKey)
+        public HttpResponseMessage GetUserProfile(int id, [FromUri]string sessionKey)
         {
             var context = new SocialLifeContext();
             using (context)
@@ -191,17 +221,40 @@ namespace SocialLife.Services.Controllers
                         BirthDate = foundUser.Profile.BirthDate,
                         City = foundUser.Profile.City,
                         Country = foundUser.Profile.Country,
-                        FriendsList = foundUser.Profile.FriendsList,
+                        FriendsList = new List<UserModel>(),
                         Gender = foundUser.Profile.Gender,
                         DisplayName = foundUser.DisplayName,
                         Mood = foundUser.Profile.Mood,
                         Status = foundUser.Profile.Status.StatusName,
-                        PhoneNumber = foundUser.Profile.PhoneNumber,
-                        LastLatitude = foundUser.Locations.Last().Latitude,
-                        LastLongitute = foundUser.Locations.Last().Longitude,
-                        LastLocationDate = foundUser.Locations.Last().Date
+                        PhoneNumber = foundUser.Profile.PhoneNumber
                     };
 
+                    if (foundUser.Locations.Count > 0)
+                    {
+                        userProfile.LastLatitude = foundUser.Locations.LastOrDefault().Latitude;
+                        userProfile.LastLongitute = foundUser.Locations.LastOrDefault().Longitude;
+                        userProfile.LastLocationDate = foundUser.Locations.LastOrDefault().Date;
+                    }
+
+                    if (!String.IsNullOrEmpty(foundUser.Profile.FriendsList))
+                    {
+                        var friends = foundUser.Profile.FriendsList.Split(' ', ',');
+
+                        foreach (var friend in friends)
+                        {
+                            int friendId = int.Parse(friend);
+
+                            var friendFromDb = context.Users.Where(us => us.UserId == friendId).First();
+
+                            var friendToAdd = new UserModel()
+                            {
+                                DisplayName = friendFromDb.DisplayName,
+                                Id = friendFromDb.UserId
+                            };
+
+                            userProfile.FriendsList.Add(friendToAdd);
+                        }
+                    }
                     var response = Request.CreateResponse<ProfileModel>(HttpStatusCode.OK, userProfile);
                     return response;
                 }

@@ -30,7 +30,7 @@ namespace SocialLife.Services.Models
 
         public DateTime? BirthDate { get; set; }
 
-        public string FriendsList { get; set; }
+        public List<UserModel> FriendsList { get; set; }
 
         public string LastLongitute { get; set; }
 

@@ -85,7 +85,7 @@ namespace SocialLife.Services.Controllers
                     });
                 }
 
-                HttpResponseMessage successfulResponse = Request.CreateResponse<ICollection<MessageModel>>(HttpStatusCode.Created, messagesModel);
+                HttpResponseMessage successfulResponse = Request.CreateResponse<ICollection<MessageModel>>(HttpStatusCode.OK, messagesModel);
 
                 //this.SendNotification(id);
                 return successfulResponse;
@@ -121,7 +121,7 @@ namespace SocialLife.Services.Controllers
                         MessageDate = message.Date,
                         Sender = sender,
                         Receiver = receiver,
-                        StatusId = 1,
+                        StatusId = context.Statuses.Where(st => st.StatusName == "Delivered").First().StatusId,
                     };
 
                     context.Messages.Add(messageToPush);
@@ -160,13 +160,13 @@ namespace SocialLife.Services.Controllers
                     throw new ArgumentOutOfRangeException("No such user, event or invalid key.");
                 }
 
-                var messages = context.Messages.Where(msg => msg.EventId == id);
+                var messages = context.Messages.Where(msg => msg.EventId == id).ToList();
                 if (messages == null)
                 {
                     throw new ArgumentNullException("No messages found.");
                 }
 
-                var orderedMessages = messages.AsQueryable().OrderBy(msg => msg.MessageDate);
+                var orderedMessages = messages.AsQueryable().OrderBy(msg => msg.MessageDate).ToList();
 
                 ICollection<MessageModel> messagesModel = new List<MessageModel>();
 
@@ -191,7 +191,7 @@ namespace SocialLife.Services.Controllers
                     });
                 }
 
-                HttpResponseMessage successfulResponse = Request.CreateResponse<ICollection<MessageModel>>(HttpStatusCode.Created, messagesModel);
+                HttpResponseMessage successfulResponse = Request.CreateResponse<ICollection<MessageModel>>(HttpStatusCode.OK, messagesModel);
 
                 //this.SendNotification(id);
                 return successfulResponse;
@@ -220,7 +220,7 @@ namespace SocialLife.Services.Controllers
                         MessageDate = message.Date,
                         Sender = sender,
                         EventId = messageEvent.EventId,
-                        StatusId = 1,
+                        StatusId = context.Statuses.Where(st => st.StatusName == "Delivered").First().StatusId,
                     };
 
                     context.Messages.Add(messageToPush);
@@ -275,7 +275,7 @@ namespace SocialLife.Services.Controllers
                                 MessageDate = message.Date,
                                 Sender = sender,
                                 Receiver = receiver,
-                                StatusId = 1,
+                                StatusId = context.Statuses.Where(st => st.StatusName == "Delivered").First().StatusId,
                             };
 
                             context.Messages.Add(messageToPush);
