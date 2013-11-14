@@ -39,6 +39,11 @@ namespace SocialLife.Services.Controllers
                     throw new ArgumentException("No such logged user.");
                 }
 
+                if (updatedProfile.AuthCode != userEntity.AuthCode)
+                {
+                    throw new ArgumentException("Wrong password.");
+                }
+
                 userEntity.Profile.About = updatedProfile.About;
                 userEntity.Profile.Avatar = updatedProfile.Avatar;
                 userEntity.Profile.BirthDate = updatedProfile.BirthDate;

@@ -90,7 +90,7 @@ namespace SocialLife.Services.Controllers
                         Id = userToAdd.UserId
                     };
 
-                    var response = Request.CreateResponse<UserModel>(HttpStatusCode.OK, registeredUser); //FIX THIS
+                    var response = Request.CreateResponse<UserModel>(HttpStatusCode.Created, registeredUser); //FIX THIS
                     return response;
                 }
                 else
@@ -126,7 +126,9 @@ namespace SocialLife.Services.Controllers
                 UserModel loggedUser = new UserModel()
                 {
                     Username = userEntity.Username,
-                    SessionKey = sessionKey
+                    SessionKey = sessionKey,
+                    DisplayName = userEntity.DisplayName,
+                    Id = userEntity.UserId
                 };
 
                 var response = Request.CreateResponse<UserModel>(HttpStatusCode.OK, loggedUser);
@@ -177,7 +179,7 @@ namespace SocialLife.Services.Controllers
             {
                 throw new ArgumentNullException("Username cannot be empty.");
             }
-            else if (displayName.Length < MinUserLengthString && displayName.Length > MaxUserLengthString)
+            else if (displayName.Length < MinUserLengthString || displayName.Length > MaxUserLengthString)
             {
                 throw new ArgumentOutOfRangeException("Username must be between 6 and 30 symbols.");
             }

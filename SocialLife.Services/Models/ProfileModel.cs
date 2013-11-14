@@ -8,7 +8,9 @@ namespace SocialLife.Services.Models
     public class ProfileModel
     {
         public int UserId { get; set; }
-        
+
+        public string AuthCode { get; set; }
+
         public string DisplayName { get; set; }
 
         //profile details
