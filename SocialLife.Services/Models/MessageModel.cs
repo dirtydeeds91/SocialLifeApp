@@ -13,6 +13,8 @@ namespace SocialLife.Services.Models
 
         public DateTime Date { get; set; }
 
+        public string DateString { get; set; }
+
         public string Sender { get; set; }
 
         public string Receiver { get; set; }

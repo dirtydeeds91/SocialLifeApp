@@ -39,5 +39,7 @@ namespace SocialLife.Services.Models
         public string LastLatitude { get; set; }
 
         public DateTime LastLocationDate { get; set; }
+
+        public int EventsCount { get; set; }
     }
 }

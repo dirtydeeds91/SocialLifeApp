@@ -14,6 +14,8 @@ namespace SocialLife.Services.Models
 
         public string CreatorName { get; set; }
 
+        public string AvatarUrl { get; set; }
+
         public string Content { get; set; }
 
         public DateTime Date { get; set; }

@@ -231,7 +231,8 @@ namespace SocialLife.Services.Controllers
                         DisplayName = foundUser.DisplayName,
                         Mood = foundUser.Profile.Mood,
                         Status = foundUser.Profile.Status.StatusName,
-                        PhoneNumber = foundUser.Profile.PhoneNumber
+                        PhoneNumber = foundUser.Profile.PhoneNumber,
+                        EventsCount = foundUser.Events.Count
                     };
 
                     if (foundUser.Locations.Count > 0)
@@ -289,21 +290,25 @@ namespace SocialLife.Services.Controllers
 
                 if (foundUsers != null)
                 {
-                    ICollection<UserModel> usersList = new List<UserModel>();
+                    List<UserModel> usersList = new List<UserModel>();
 
                     foreach (var foundUser in foundUsers)
                     {
-                        UserModel userProfile = new UserModel()
+                        if (foundUser != userEntity)
                         {
-                            Username = foundUser.Username,
-                            Id = foundUser.UserId,
-                            DisplayName = foundUser.DisplayName
-                        };
+                            UserModel userProfile = new UserModel()
+                            {
+                                Username = foundUser.Username,
+                                Id = foundUser.UserId,
+                                DisplayName = foundUser.DisplayName,
+                            };
 
-                        usersList.Add(userProfile);
+                            usersList.Add(userProfile);
+                        }
+                        
                     }
 
-                    var response = Request.CreateResponse<ICollection<UserModel>>(HttpStatusCode.OK, usersList);
+                    var response = Request.CreateResponse<List<UserModel>>(HttpStatusCode.OK, usersList);
                     return response;
                 }
                 else

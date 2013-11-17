@@ -78,7 +78,7 @@ namespace SocialLife.Services.Controllers
                     messagesModel.Add(new MessageModel()
                     {
                         Content = singleMessage.MessageContent,
-                        Date = singleMessage.MessageDate,
+                        DateString = singleMessage.MessageDate.ToString("dd/MMM/yy H:mm:ss"),
                         Sender = singleMessage.Sender.DisplayName,
                         Receiver = singleMessage.Receiver.DisplayName,
                         Status = singleMessage.Status.StatusName
@@ -184,7 +184,7 @@ namespace SocialLife.Services.Controllers
                     messagesModel.Add(new MessageModel()
                     {
                         Content = singleMessage.MessageContent,
-                        Date = singleMessage.MessageDate,
+                        DateString = singleMessage.MessageDate.ToString("dd/MMM/yy H:mm:ss"),
                         Sender = singleMessage.Sender.DisplayName,
                         Event = chosenEvent.EventName,
                         Status = singleMessage.Status.StatusName
@@ -257,6 +257,8 @@ namespace SocialLife.Services.Controllers
 
                     var friends = sender.Profile.FriendsList.Split(' ', ',');
 
+                    int count = 0;
+
                     if (sender == null)
                     {
                         throw new ArgumentOutOfRangeException("No such user, event or invalid key.");
@@ -279,12 +281,13 @@ namespace SocialLife.Services.Controllers
                             };
 
                             context.Messages.Add(messageToPush);
+                            count++;
                         }
                        
                     }
                     context.SaveChanges();
 
-                    HttpResponseMessage successfulResponse = Request.CreateResponse(HttpStatusCode.Created);
+                    HttpResponseMessage successfulResponse = Request.CreateResponse<string>(HttpStatusCode.Created, "Posted to " + count + " free friends." );
 
                     return successfulResponse;
                 }

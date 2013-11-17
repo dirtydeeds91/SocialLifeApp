@@ -28,6 +28,8 @@ namespace SocialLife.Models
         [Required]
         public DateTime EventDate { get; set; }
 
+        public string AvatarUrl { get; set; }
+
         //[ForeignKey("Location")]
         public int LocationId { get; set; }
 

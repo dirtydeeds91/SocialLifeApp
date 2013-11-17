@@ -171,6 +171,7 @@
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Models\SocialLifeDbContextFactory.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

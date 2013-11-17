@@ -51,6 +51,7 @@ namespace SocialLife.Services.Controllers
                         Name = chosenEvent.EventName,
                         Content = chosenEvent.EventContent,
                         CreatorName = chosenEvent.Users.First().DisplayName,
+                        AvatarUrl = chosenEvent.AvatarUrl,
                         Date = chosenEvent.EventDate,
                         Longitude = chosenEvent.EventLocation.Longitude,
                         Latitude = chosenEvent.EventLocation.Latitude,
@@ -101,6 +102,7 @@ namespace SocialLife.Services.Controllers
                     {
                         EventName = newEvent.Name,
                         EventContent = newEvent.Content,
+                        AvatarUrl = newEvent.AvatarUrl,
                         EventDate = newEvent.Date,
                         Messages = new List<Message>(),
                         Users = new List<User>(),
@@ -120,6 +122,7 @@ namespace SocialLife.Services.Controllers
 
                     EventModel resultEvent = new EventModel()
                     {
+                        EventId = eventToAdd.EventId,
                         Name = eventToAdd.EventName,
                         Content = eventToAdd.EventContent,
                         CreatorName = eventToAdd.Users.First().DisplayName,
@@ -140,7 +143,7 @@ namespace SocialLife.Services.Controllers
 
         [HttpPut]
         [ActionName("add")]
-        public HttpResponseMessage PutAddUserToEvent(int id, [FromUri]string sessionKey, [FromUri]int? userId)
+        public HttpResponseMessage PutAddUserToEvent(int id, [FromUri]string sessionKey, [FromUri]int userId)
         {
             var context = new SocialLifeContext();
             using (context)
@@ -156,7 +159,7 @@ namespace SocialLife.Services.Controllers
                         throw new ArgumentOutOfRangeException("No such user or invalid key.");
                     }
 
-                    if (userId == null)
+                    if (userId == 0)
                     {
                         chosenEvent.Users.Add(sender);
                         context.SaveChanges();
@@ -242,6 +245,7 @@ namespace SocialLife.Services.Controllers
                     chosenEvent.EventContent = updatedEvent.Content;
                     chosenEvent.EventDate = updatedEvent.Date;
                     chosenEvent.EventName = updatedEvent.Name;
+                    chosenEvent.AvatarUrl = updatedEvent.AvatarUrl;
                     var newStatus = updatedEvent.Status;
                     chosenEvent.StatusId = context.Statuses.Where(st => st.StatusName == newStatus).First().StatusId;
                     if (updatedEvent.Latitude != null && updatedEvent.Longitude != null)
@@ -350,7 +354,9 @@ namespace SocialLife.Services.Controllers
                 {
                     User sender = context.Users.Where(us => us.SessionKey == sessionKey).FirstOrDefault();
 
-                    ICollection<Event> foundEvents = context.Events.Where(ev => ev.Users.FirstOrDefault().UserId == id).ToList();
+                    User userToSearch = context.Users.Where(us => us.UserId == id).FirstOrDefault();
+
+                    ICollection<Event> foundEvents = userToSearch.Events.ToList();
 
                     if (sender == null || foundEvents.Count == 0)
                     {
