@@ -358,9 +358,16 @@ namespace SocialLife.Services.Controllers
 
                     ICollection<Event> foundEvents = userToSearch.Events.ToList();
 
-                    if (sender == null || foundEvents.Count == 0)
+                    if (sender == null)
                     {
                         throw new ArgumentOutOfRangeException("No such user, no found events or invalid key.");
+                    }
+
+                    if (foundEvents.Count == 0)
+                    {
+                        HttpResponseMessage failResponse = Request.CreateResponse<string>(HttpStatusCode.OK, "No results found");
+
+                        return failResponse;
                     }
 
                     ICollection<EventModel> results = new List<EventModel>();
