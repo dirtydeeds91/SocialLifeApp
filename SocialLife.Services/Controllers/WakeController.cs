@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
-using System.Web.Mvc;
+using System.Web.Http;
 
 namespace SocialLife.Services.Controllers
 {
-    public class HomeController : Controller
+    public class WakeController : ApiController
     {
-        public ActionResult Index()
+        [HttpGet]
+        [ActionName("wake")]
+        public string GetSearchEvents()
         {
-            return View();
+            return "Done";
         }
     }
 }

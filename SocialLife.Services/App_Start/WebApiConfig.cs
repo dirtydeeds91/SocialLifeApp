@@ -34,6 +34,12 @@ namespace SocialLife.Services
             );
 
             config.Routes.MapHttpRoute(
+                name: "WakeApi",
+                routeTemplate: "api/wake/{action}",
+                defaults: new { controller = "wake" }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }

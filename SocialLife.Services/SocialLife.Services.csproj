@@ -165,13 +165,13 @@
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\ProfilesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\WakeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
-    <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Models\SocialLifeDbContextFactory.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

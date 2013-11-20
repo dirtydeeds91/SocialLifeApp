@@ -286,6 +286,16 @@ namespace SocialLife.Services.Controllers
                         throw new ArgumentException("You do not have permission to do that.");
                     }
 
+                    var eventMessages = chosenEvent.Messages.ToList();
+                    foreach (var message in eventMessages)
+                    {
+                        context.Messages.Remove(message);
+                    }
+
+                    var eventLocation = chosenEvent.EventLocation;
+
+                    context.Locations.Remove(eventLocation);
+
                     context.Events.Remove(chosenEvent);
 
                     context.SaveChanges();
